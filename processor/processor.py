@@ -39,6 +39,7 @@ def do_train(start_epoch, args, model, train_loader, evaluator, optimizer,
 
     # train
     for epoch in range(start_epoch, num_epoch + 1):
+        train_loader.sampler.set_epoch(epoch)
         start_time = time.time()
         for meter in meters.values():
             meter.reset()

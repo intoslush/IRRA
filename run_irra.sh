@@ -9,4 +9,5 @@ python train.py \
 --MLM \
 --dataset_name $DATASET_NAME \
 --loss_names 'sdm+mlm+id' \
+--root_dir '/home/cxd/storage/proj/IRRA/_id' \
 --num_epoch 60

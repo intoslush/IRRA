@@ -1,10 +1,10 @@
 import argparse
-
+import os
 
 def get_args():
     parser = argparse.ArgumentParser(description="IRRA Args")
     ######################## general settings ########################
-    parser.add_argument("--local_rank", default=0, type=int)
+    parser.add_argument("--local_rank", type=int, default=int(os.getenv("LOCAL_RANK", 0)))
     parser.add_argument("--name", default="baseline", help="experiment name to save")
     parser.add_argument("--output_dir", default="logs")
     parser.add_argument("--log_period", default=100)
@@ -69,6 +69,6 @@ def get_args():
     parser.add_argument("--num_workers", type=int, default=8)
     parser.add_argument("--test", dest='training', default=True, action='store_false')
 
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
 
     return args

@@ -116,7 +116,20 @@ def build_dataloader(args, tranforms=None):
         elif args.sampler == 'random':
             # TODO add distributed condition
             logger.info('using random sampler')
-            train_loader = DataLoader(train_set,
+            if args.distributed:
+                # TODO valid distributed condition
+                logger.info('using ddp random sampler')
+                logger.info('DISTRIBUTED TRAIN START')
+                mini_batch_size = args.batch_size // get_world_size()
+                # 初始化DistributedSampler
+                train_sampler = DistributedSampler(train_set, shuffle=True)
+                train_loader = DataLoader(train_set,
+                                          batch_size=mini_batch_size, #args.batch_size,  # 改为mini_batch
+                                          sampler=train_sampler,  # 使用DistributedSampler
+                                          num_workers=num_workers,
+                                          collate_fn=collate)
+            else:
+                train_loader = DataLoader(train_set,
                                       batch_size=args.batch_size,
                                       shuffle=True,
                                       num_workers=num_workers,

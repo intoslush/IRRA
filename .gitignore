@@ -1,0 +1,12 @@
+# 忽略所有 .pyc 文件
+*.pyc
+*.log
+*.json
+*.pth
+*.yaml
+
+# 忽略 __pycache__ 目录
+__pycache__/
+# 忽略 log 文件夹下的所有文件
+logs/
+env_check.ipynb

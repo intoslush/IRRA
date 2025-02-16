@@ -16,6 +16,8 @@ from utils.metrics import Evaluator
 from utils.options import get_args
 from utils.comm import get_rank, synchronize
 
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1,2,3"
+
 
 def set_seed(seed=0):
     torch.manual_seed(seed)
@@ -29,16 +31,22 @@ def set_seed(seed=0):
 
 if __name__ == '__main__':
     args = get_args()
-    set_seed(1+get_rank())
+    # args.local_rank=int(os.environ["LOCAL_RANK"])
+    set_seed(1 + get_rank())
     name = args.name
 
     num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
     args.distributed = num_gpus > 1
 
     if args.distributed:
+        os.environ["RANK"] = str(args.local_rank)
+        print("Using distributed training", "local_rank:",args.local_rank,"os_rank:",os.environ["LOCAL_RANK"],"world_size:",os.environ["WORLD_SIZE"])
+        torch.distributed.init_process_group(backend="nccl")
+        # print("Using distributed training", args.local_rank,os.environ["LOCAL_RANK"],torch.distributed.get_rank(),torch.distributed.get_world_size())
         torch.cuda.set_device(args.local_rank)
-        torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
+        print("all synchronized", args.local_rank,os.environ["LOCAL_RANK"],torch.distributed.get_rank(),torch.distributed.get_world_size())
+
     
     device = "cuda"
     cur_time = time.strftime("%Y%m%d_%H%M%S", time.localtime())
