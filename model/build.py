@@ -27,6 +27,7 @@ class IRRA(nn.Module):
             self.cross_attn = nn.MultiheadAttention(self.embed_dim,
                                                     self.embed_dim // 64,
                                                     batch_first=True)
+            #跨模态transformer,默认是四层
             self.cross_modal_transformer = Transformer(width=self.embed_dim,
                                                        layers=args.cmt_depth,
                                                        heads=self.embed_dim //

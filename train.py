@@ -16,6 +16,7 @@ from utils.metrics import Evaluator
 from utils.options import get_args
 from utils.comm import get_rank, synchronize
 
+from model import build_albef_model#用来把模型的backbone换成albef的
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1,2,3"
 
 
@@ -58,7 +59,9 @@ if __name__ == '__main__':
 
     # get image-text pair datasets dataloader
     train_loader, val_img_loader, val_txt_loader, num_classes = build_dataloader(args)
-    model = build_model(args, num_classes)
+    #其中bulid_model是原始的irra模型，build_albef_model是把backbone换成albef的模型
+    # model = build_model(args, num_classes)
+    model = build_albef_model(args, num_classes)
     logger.info('Total params: %2.fM' % (sum(p.numel() for p in model.parameters()) / 1000000.0))
     model.to(device)
 

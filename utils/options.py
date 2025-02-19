@@ -13,6 +13,13 @@ def get_args():
     parser.add_argument("--resume", default=False, action='store_true')
     parser.add_argument("--resume_ckpt_file", default="", help='resume from ...')
 
+    ######################## MY  momentum args ########################
+    parser.add_argument("--momentum", type=float, default=0.995, help="momentum coefficient")
+    parser.add_argument("--queue_size", type=int, default=65536, help="queue size")
+    parser.add_argument("--proj_dim", type=int, default=256, help="projection dimension")
+    parser.add_argument("--temp", type=float, default=0.07, help="initial temperature coefficient")
+    parser.add_argument("--m_alpha", type=float, default=0.5, help="动量模型的超参数")
+
     ######################## model general settings ########################
     parser.add_argument("--pretrain_choice", default='ViT-B/16') # whether use pretrained model
     parser.add_argument("--temperature", type=float, default=0.02, help="initial temperature value, if 0, don't use temperature")
@@ -42,7 +49,7 @@ def get_args():
     parser.add_argument("--optimizer", type=str, default="Adam", help="[SGD, Adam, Adamw]")
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--bias_lr_factor", type=float, default=2.)
-    parser.add_argument("--momentum", type=float, default=0.9)
+    # parser.add_argument("--momentum", type=float, default=0.9)
     parser.add_argument("--weight_decay", type=float, default=4e-5)
     parser.add_argument("--weight_decay_bias", type=float, default=0.)
     parser.add_argument("--alpha", type=float, default=0.9)
